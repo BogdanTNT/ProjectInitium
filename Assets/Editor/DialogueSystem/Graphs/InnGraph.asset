@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0202a3095b7477a4091d56344f0af6b3, type: 3}
+  m_Name: InnGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: Inn
+  <Groups>k__BackingField: []
+  <Nodes>k__BackingField:
+  - <ID>k__BackingField: 36925eda-d43c-490d-b3ca-902833b096d7
+    <Name>k__BackingField: s3
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: Next Dialogue
+      <NodeID>k__BackingField: c903dc17-eb51-43d7-bc11-5f67ae45ba6e
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 735, y: 310}
+  - <ID>k__BackingField: e363de0a-638e-403b-a25e-88dbfc7a8724
+    <Name>k__BackingField: s2
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: Next Dialogue
+      <NodeID>k__BackingField: 36925eda-d43c-490d-b3ca-902833b096d7
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 424, y: 239}
+  - <ID>k__BackingField: c903dc17-eb51-43d7-bc11-5f67ae45ba6e
+    <Name>k__BackingField: s4
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: Next Dialogue
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 1080, y: 360}
+  - <ID>k__BackingField: d5d82596-dc2d-476c-8806-feae85c0559e
+    <Name>k__BackingField: s1
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: Next Dialogue
+      <NodeID>k__BackingField: e363de0a-638e-403b-a25e-88dbfc7a8724
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 47, y: 214}
+  <OldGroupNames>k__BackingField: []
+  <OldUngroupedNodeNames>k__BackingField:
+  - s3
+  - s2
+  - s4
+  - s1
+  <OldGroupedNodeNames>k__BackingField:
+    list: []

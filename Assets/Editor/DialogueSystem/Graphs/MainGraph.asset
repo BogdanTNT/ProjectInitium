@@ -1,0 +1,207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0202a3095b7477a4091d56344f0af6b3, type: 3}
+  m_Name: MainGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: Main
+  <Groups>k__BackingField:
+  - <ID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <Name>k__BackingField: Main
+    <Position>k__BackingField: {x: 352, y: 270}
+  - <ID>k__BackingField: 5eb998b2-929e-4e61-a40a-b42385cff67c
+    <Name>k__BackingField: BlacksmithBeforeInn
+    <Position>k__BackingField: {x: 498, y: 1010}
+  - <ID>k__BackingField: 66759d49-1379-4db0-a4b8-194eb0629252
+    <Name>k__BackingField: ButcherBeforeInn
+    <Position>k__BackingField: {x: 502, y: 1325}
+  - <ID>k__BackingField: f8257dec-e430-43ab-89be-4551afdc08cf
+    <Name>k__BackingField: BlacksmithAfterInn
+    <Position>k__BackingField: {x: 1194, y: 1020}
+  - <ID>k__BackingField: 3a47b1f7-ab3a-4ff4-b0d6-0c552548d8e9
+    <Name>k__BackingField: ButcherAfterInn
+    <Position>k__BackingField: {x: 1206, y: 1334}
+  <Nodes>k__BackingField:
+  - <ID>k__BackingField: 44d6f07e-8337-472f-8f39-96bed3a6ec11
+    <Name>k__BackingField: Innq1s1
+    <Speaker>k__BackingField: Inn
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 59733437-d8a9-43df-9ad6-f8bb93f50088
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 377, y: 329}
+  - <ID>k__BackingField: 59733437-d8a9-43df-9ad6-f8bb93f50088
+    <Name>k__BackingField: Innq1s2
+    <Speaker>k__BackingField: Inn
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 8b87ecce-245a-49a2-b502-d4e77e48f4ed
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 777, y: 329}
+  - <ID>k__BackingField: 8b87ecce-245a-49a2-b502-d4e77e48f4ed
+    <Name>k__BackingField: Innq1s3
+    <Speaker>k__BackingField: Inn
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: ea0fa74d-ae25-4301-ad69-5e06e915046a
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: a8961ea3-5d2b-425a-a5a1-f8d36bbcad40
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 1203, y: 329}
+  - <ID>k__BackingField: 6551fc67-5f7b-4667-939c-b0cc63d52005
+    <Name>k__BackingField: Blackq1s2
+    <Speaker>k__BackingField: Blacksmith
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: da7af22b-f023-49c7-b479-dfbe25819e18
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 2068, y: 329}
+  - <ID>k__BackingField: da7af22b-f023-49c7-b479-dfbe25819e18
+    <Name>k__BackingField: Blackq1s3
+    <Speaker>k__BackingField: Blacksmith
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: a63712d9-65c9-401a-aeaa-aa0145edb75a
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 2519, y: 329}
+  - <ID>k__BackingField: a63712d9-65c9-401a-aeaa-aa0145edb75a
+    <Name>k__BackingField: Innq1s4
+    <Speaker>k__BackingField: Inn
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 2947, y: 329}
+  - <ID>k__BackingField: a8961ea3-5d2b-425a-a5a1-f8d36bbcad40
+    <Name>k__BackingField: Bucherq1s1
+    <Speaker>k__BackingField: Butcher
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: aeb0bf0f-dd2d-48ee-a23e-52392aff8e83
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 1633, y: 618}
+  - <ID>k__BackingField: aeb0bf0f-dd2d-48ee-a23e-52392aff8e83
+    <Name>k__BackingField: Butcherq1s2
+    <Speaker>k__BackingField: Butcher
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 440c822c-ce0b-4f42-9a25-c7f7a8b90c3e
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 2068, y: 618}
+  - <ID>k__BackingField: 440c822c-ce0b-4f42-9a25-c7f7a8b90c3e
+    <Name>k__BackingField: Butcherq1s3
+    <Speaker>k__BackingField: Butcher
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: a63712d9-65c9-401a-aeaa-aa0145edb75a
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 2519, y: 618}
+  - <ID>k__BackingField: ea0fa74d-ae25-4301-ad69-5e06e915046a
+    <Name>k__BackingField: Blackq1s1
+    <Speaker>k__BackingField: Blacksmith
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 6551fc67-5f7b-4667-939c-b0cc63d52005
+    <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 1633, y: 329}
+  - <ID>k__BackingField: f5c96cc0-0359-49cb-8935-3d7b691307bd
+    <Name>k__BackingField: Blacksmithq2s1
+    <Speaker>k__BackingField: Blacksmith
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: 5eb998b2-929e-4e61-a40a-b42385cff67c
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 523, y: 1069}
+  - <ID>k__BackingField: 56575894-eb4f-4dc0-9f81-8512958b5c7e
+    <Name>k__BackingField: Butcherq2s1
+    <Speaker>k__BackingField: Butcher
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: 66759d49-1379-4db0-a4b8-194eb0629252
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 527, y: 1384}
+  - <ID>k__BackingField: e659db51-f9b0-41b6-8b18-259e97e6a3a5
+    <Name>k__BackingField: Blacksmithq3s1
+    <Speaker>k__BackingField: Blacksmith
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: f8257dec-e430-43ab-89be-4551afdc08cf
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 1219, y: 1079}
+  - <ID>k__BackingField: 50ae0119-d458-4bcf-9f23-b0d19709f9ea
+    <Name>k__BackingField: Butcherq3s1
+    <Speaker>k__BackingField: Butcher
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: 3a47b1f7-ab3a-4ff4-b0d6-0c552548d8e9
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 1231, y: 1393}
+  <OldGroupNames>k__BackingField:
+  - Main
+  - BlacksmithBeforeInn
+  - ButcherBeforeInn
+  - BlacksmithAfterInn
+  - ButcherAfterInn
+  <OldUngroupedNodeNames>k__BackingField: []
+  <OldGroupedNodeNames>k__BackingField:
+    list:
+    - Key: Main
+      Value:
+      - Innq1s1
+      - Innq1s2
+      - Innq1s3
+      - Blackq1s2
+      - Blackq1s3
+      - Innq1s4
+      - Bucherq1s1
+      - Butcherq1s2
+      - Butcherq1s3
+      - Blackq1s1
+    - Key: BlacksmithBeforeInn
+      Value:
+      - Blacksmithq2s1
+    - Key: ButcherBeforeInn
+      Value:
+      - Butcherq2s1
+    - Key: BlacksmithAfterInn
+      Value:
+      - Blacksmithq3s1
+    - Key: ButcherAfterInn
+      Value:
+      - Butcherq3s1

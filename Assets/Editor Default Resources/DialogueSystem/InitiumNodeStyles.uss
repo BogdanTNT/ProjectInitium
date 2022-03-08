@@ -1,0 +1,134 @@
+/* CONTAINERS */
+
+.Initium-node__extension-container
+{
+	background-color: var(--Initium-colors-window-dark-grey-1);
+	padding: var(--Initium-metrics-window-pixels-8);
+}
+
+.Initium-node__main-container
+{
+	background-color: var(--Initium-colors-window-dark-grey-1);
+}
+
+.Initium-node__custom-data-container
+{
+	background-color: var(--Initium-colors-window-dark-grey-3);
+	border-radius: var(--Initium-metrics-window-pixels-4);
+	padding: var(--Initium-metrics-window-pixels-8);
+}
+
+/* INPUTS */
+
+.Initium-node__text-field > .unity-text-field__input
+{
+	background-color: var(--Initium-colors-window-dark-grey-1);
+	border-color: var(--Initium-colors-window-dark-grey-6);
+	border-radius: var(--Initium-metrics-window-pixels-4);
+	max-width: var(--Initium-metrics-window-pixels-240);
+	min-width: var(--Initium-metrics-window-pixels-160);
+	padding: var(--Initium-metrics-window-pixels-8);
+	white-space: normal;
+}
+
+.Initium-node__text-field__hidden > .unity-text-field__input
+{
+	background-color: transparent;
+	border-color: transparent;
+}
+
+.Initium-node__text-field__hidden > .unity-text-field__input:focus
+{
+	background-color: var(--Initium-colors-window-dark-grey-1);
+	border-color: var(--Initium-colors-window-dark-grey-6);
+}
+
+.Initium-node__filename-text-field > .unity-text-field__input
+{
+	max-width: var(--Initium-metrics-window-pixels-1000);
+	margin: var(--Initium-metrics-window-pixels-4);
+	padding: var(--Initium-metrics-window-pixels-4);
+}
+
+.Initium-node__choice-text-field > .unity-text-field__input
+{
+	font-size: var(--Initium-metrics-window-pixels-11);
+	height: var(--Initium-metrics-window-pixels-35);
+	max-width: var(--Initium-metrics-window-pixels-1000);
+	min-width: var(--Initium-metrics-window-pixels-0);
+}
+
+.Initium-node__choice-text-field > .unity-text-field__input:focus
+{
+	height: var(--Initium-metrics-window-pixels-25);
+	margin: var(--Initium-metrics-window-pixels-4);
+	padding: var(--Initium-metrics-window-pixels-4);
+}
+
+.Initium-node__quote-text-field > .unity-text-field__input
+{
+	background-color: var(--Initium-colors-window-dark-grey-4);
+	border-color: transparent;
+	border-left-color: var(--Initium-colors-window-dark-grey-6);
+	border-left-width: var(--Initium-metrics-window-pixels-4);
+	padding: var(--Initium-metrics-window-pixels-16);
+	max-width: var(--Initium-metrics-window-pixels-600);
+}
+
+.Initium-node__quote-text-field > .unity-text-field__input:hover
+{
+	background-color: var(--Initium-colors-window-dark-grey-5);
+}
+
+.Initium-node__quote-text-field > .unity-text-field__input:focus
+{
+	background-color: var(--Initium-colors-window-dark-grey-1);
+	border-color: var(--Initium-colors-window-dark-grey-6);
+}
+
+/* BUTTONS */
+
+.Initium-node__button
+{
+	background-color: var(--Initium-colors-window-dark-grey-5);
+	border-color: var(--Initium-colors-window-dark-grey-1);
+	margin: var(--Initium-metrics-window-pixels-4);
+	max-height: var(--Initium-metrics-window-pixels-25);
+}
+
+.Initium-node__button:hover
+{
+	background-color: var(--Initium-colors-window-dark-grey-2);
+}
+
+.Initium-node__button:active
+{
+	background-color: var(--Initium-colors-window-dark-grey-3);
+	color: var(--Initium-colors-window-yellow);
+}
+
+/* ELEMENTS */
+
+TextField
+{
+	margin-left: var(--Initium-metrics-window-pixels-0);
+}
+
+.Initium-node__custom-data-container > Foldout
+{
+	margin-left: var(--Initium-metrics-window-pixels-n4);
+	margin-top: var(--Initium-metrics-window-pixels-4);
+}
+
+.Initium-node__custom-data-container > Foldout > TextField
+{
+	margin-left: var(--Initium-metrics-window-pixels-n12);
+	margin-top: var(--Initium-metrics-window-pixels-8);
+}
+
+/* BUILT IN */
+
+.unity-toggle__text
+{
+	margin-left: var(--Initium-metrics-window-pixels-2);
+}

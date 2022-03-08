@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caaa76378291a144d849f29230be0a5a, type: 3}
+  m_Name: Inn
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: Inn
+  <DialogueGroups>k__BackingField:
+    list: []
+  <UngroupedDialogues>k__BackingField:
+  - {fileID: 11400000, guid: a8cb05258f313014d9b2dee3ac03737d, type: 2}
+  - {fileID: 11400000, guid: 043bd3d08cc3b294cb94888763babcf0, type: 2}
+  - {fileID: 11400000, guid: 2c9f2f640183c544492cef511527cc24, type: 2}
+  - {fileID: 11400000, guid: 4f79ce9423234004984935938b70a7ef, type: 2}

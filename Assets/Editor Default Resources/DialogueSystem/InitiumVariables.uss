@@ -1,0 +1,31 @@
+:root
+{
+	--Initium-colors-grid-light-grey-1: #2b2b2b;
+	--Initium-colors-grid-light-grey-2: rgba(51, 51, 51, 0.4);
+	--Initium-colors-grid-light-grey-3: rgba(51, 51, 51, 1);
+	--Initium-colors-window-dark-grey-1: #1D1D1E;
+	--Initium-colors-window-dark-grey-2: #2B2D2F;
+	--Initium-colors-window-dark-grey-3: #212325;
+	--Initium-colors-window-dark-grey-4: #232527;
+	--Initium-colors-window-dark-grey-5: #252729;
+	--Initium-colors-window-dark-grey-6: #27292C;
+	--Initium-colors-window-yellow: #FDD057;
+
+	--Initium-metrics-grid-25: 25;
+	--Initium-metrics-window-pixels-n12: -12px;
+	--Initium-metrics-window-pixels-n4: -4px;
+	--Initium-metrics-window-pixels-0: 0px;
+	--Initium-metrics-window-pixels-2: 2px;
+	--Initium-metrics-window-pixels-4: 4px;
+	--Initium-metrics-window-pixels-6: 6px;
+	--Initium-metrics-window-pixels-8: 8px;
+	--Initium-metrics-window-pixels-11: 11px;
+	--Initium-metrics-window-pixels-16: 16px;
+	--Initium-metrics-window-pixels-25: 25px;
+	--Initium-metrics-window-pixels-35: 35px;
+	--Initium-metrics-window-pixels-120: 120px;
+	--Initium-metrics-window-pixels-160: 160px;
+	--Initium-metrics-window-pixels-240: 240px;
+	--Initium-metrics-window-pixels-600: 600px;
+	--Initium-metrics-window-pixels-1000: 1000px;
+}
