@@ -353,7 +353,7 @@ public class Generator : MonoBehaviour
                 // Adica daca e un fetch quest sa ii adauge si iteme, dar doar atunci sa le adauge, nu si daca e info quest
 
                 //Aici cauta primul npc cu numele vorbitului care spune dialogul cu indexul j din conversatie, dupa aceea cauta conversatia npcului care are legatura cu "conversatie", dupa aceea adauga o noua linie de dialog 
-                npcs.First(npc => npc.name == conversatie[j].Speaker).conversations.First(conv => conv.priority == i).lines.Add(new Dialogue(conversatie[j].DialogueName, conversatie[j].Text));
+                npcs.First(npc => npc.name == conversatie[j].Speaker).conversations.First(conv => conv.priority == i).lines.Add(new Dialogue(conversatie[j].DialogueName, conversatie[j].Text, conversatie[j].Particle, conversatie[j].Type));
             }
         }
     }
