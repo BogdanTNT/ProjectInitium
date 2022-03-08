@@ -27,6 +27,8 @@ namespace Initium.Elements
         private Color defaultBackgroundColor;
 
         public string speaker;
+        public ParticleForQuest particle;
+        public QuestType type;
 
         public static string[] Speakers
         {
@@ -52,6 +54,7 @@ namespace Initium.Elements
             ID = Guid.NewGuid().ToString();
 
             speaker = Speakers[0];
+            particle = ParticleForQuest.Info;
 
             DialogueName = nodeName;
             Choices = new List<InitiumChoiceSaveData>();
@@ -119,17 +122,16 @@ namespace Initium.Elements
 
             titleContainer.Insert(0, dialogueNameTextField);
 
-            int index = Speakers.ToList().IndexOf(speaker);
 
-            PopupField<string> popupField = new PopupField<string>()
+            PopupField<string> speakerField = new PopupField<string>()
             {
                 choices = Speakers.ToList(),
                 value = speaker
             };
 
-            popupField.RegisterValueChangedCallback(ChangeIndex);
+            speakerField.RegisterValueChangedCallback(ChangeSpeaker);
 
-            titleContainer.Insert(1, popupField);
+            titleContainer.Insert(1, speakerField);
 
             /* INPUT CONTAINER */
 
@@ -152,6 +154,28 @@ namespace Initium.Elements
                 "Initium-node__quote-text-field"
             );
 
+            PopupField<ParticleForQuest> particleField = new PopupField<ParticleForQuest>()
+            {
+                choices = ((ParticleForQuest[])Enum.GetValues(typeof(ParticleForQuest))).ToList(),
+                value = particle
+            };
+
+            particleField.RegisterValueChangedCallback(ChangeParticle);
+
+            extensionContainer.Add(particleField);
+
+
+            PopupField<QuestType> questTypeField = new PopupField<QuestType>()
+            {
+                choices = ((QuestType[])Enum.GetValues(typeof(QuestType))).ToList(),
+                value = type
+            };
+
+            questTypeField.RegisterValueChangedCallback(ChangeQuestType);
+
+            extensionContainer.Add(questTypeField);
+
+
             textFoldout.Add(textTextField);
 
             customDataContainer.Add(textFoldout);
@@ -159,10 +183,19 @@ namespace Initium.Elements
             extensionContainer.Add(customDataContainer);
         }
 
-        private void ChangeIndex(ChangeEvent<string> evt)
+        private void ChangeSpeaker(ChangeEvent<string> evt)
         {
             speaker = evt.newValue;
+        }
 
+        private void ChangeParticle(ChangeEvent<ParticleForQuest> evt)
+        {
+            particle = evt.newValue;
+        }
+
+        private void ChangeQuestType(ChangeEvent<QuestType> evt)
+        {
+            type = evt.newValue;
         }
 
         public void DisconnectAllPorts()

@@ -162,6 +162,8 @@ namespace Initium.Utilities
                 ID = node.ID,
                 Name = node.DialogueName,
                 Speaker = node.speaker,
+                Type = node.type,
+                Particle = node.particle,
                 Choices = choices,
                 Text = node.Text,
                 GroupID = node.Group?.ID,
@@ -195,7 +197,9 @@ namespace Initium.Utilities
                 ConvertNodeChoicesToDialogueChoices(node.Choices),
                 node.DialogueType,
                 node.IsStartingNode(),
-                node.speaker
+                node.speaker,
+                node.particle,
+                node.type
             );
 
             createdDialogues.Add(node.ID, dialogue);
@@ -328,6 +332,8 @@ namespace Initium.Utilities
                 node.Choices = choices;
                 node.Text = nodeData.Text;
                 node.speaker = nodeData.Speaker;
+                node.type = nodeData.Type;
+                node.particle = nodeData.Particle;
 
                 node.Draw();
 

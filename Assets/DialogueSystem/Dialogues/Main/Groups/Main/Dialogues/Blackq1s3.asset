@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DialogueName>k__BackingField: Blackq1s3
   <Speaker>k__BackingField: Blacksmith
+  <Particle>k__BackingField: 0
+  <Type>k__BackingField: 0
   <Text>k__BackingField: Dialogue text.
   <Choices>k__BackingField:
   - <Text>k__BackingField: New Choice

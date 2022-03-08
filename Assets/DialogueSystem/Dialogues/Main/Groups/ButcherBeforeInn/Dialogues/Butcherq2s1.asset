@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DialogueName>k__BackingField: Butcherq2s1
   <Speaker>k__BackingField: Butcher
+  <Particle>k__BackingField: 0
+  <Type>k__BackingField: 0
   <Text>k__BackingField: Dialogue text.
   <Choices>k__BackingField:
   - <Text>k__BackingField: New Choice

@@ -323,6 +323,9 @@ public class Generator : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Transforma din dialogue group contrainer in list de npc care sa fie dupa aceea tradus in minecraft functions
+    /// </summary>
     public void TransformDialogueContainerToList()
     {
         npcs.Clear();
