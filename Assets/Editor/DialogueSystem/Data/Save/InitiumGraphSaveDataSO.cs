@@ -12,6 +12,9 @@ namespace Initium.Data.Save
         [field: SerializeField] public List<string> OldUngroupedNodeNames { get; set; }
         [field: SerializeField] public SerializableDictionary<string, List<string>> OldGroupedNodeNames { get; set; }
 
+        [field: SerializeField] public List<string> Speakers { get; set; }
+        [field: SerializeField] public List<string> AlternativeName { get; set; }
+
         public void Initialize(string fileName)
         {
             FileName = fileName;

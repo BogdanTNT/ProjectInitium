@@ -10,17 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f262818b55b0f4418296bad0176bdab, type: 3}
-  m_Name: Innq1s3
+  m_Name: Innkeeperq1s1
   m_EditorClassIdentifier: 
-  <DialogueName>k__BackingField: Innq1s3
-  <Speaker>k__BackingField: Inn
-  <Particle>k__BackingField: 2
-  <Type>k__BackingField: 1
+  <DialogueName>k__BackingField: Innkeeperq1s1
+  <Speaker>k__BackingField: Innkeeper
+  <AltSpeaker>k__BackingField: Lizz
+  <Particle>k__BackingField: 0
+  <Type>k__BackingField: 0
+  <FetchItems>k__BackingField: []
   <Text>k__BackingField: Dialogue text.
   <Choices>k__BackingField:
+  - <Text>k__BackingField: New Choice
+    <NextDialogue>k__BackingField: {fileID: 11400000, guid: 80ee78081c961b94da5d1340cddcd46c, type: 2}
   - <Text>k__BackingField: New Choice
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: dc4d2e0039bf9294590048d0f699223e, type: 2}
   - <Text>k__BackingField: New Choice
     <NextDialogue>k__BackingField: {fileID: 11400000, guid: 82bbf5cb2d60c154da0cc216beeb584d, type: 2}
   <DialogueType>k__BackingField: 1
-  <IsStartingDialogue>k__BackingField: 0
+  <IsStartingDialogue>k__BackingField: 1

@@ -9,9 +9,15 @@ namespace Initium.ScriptableObjects
         [field: SerializeField] public SerializableDictionary<InitiumDialogueGroupSO, List<InitiumDialogueSO>> DialogueGroups { get; set; }
         [field: SerializeField] public List<InitiumDialogueSO> UngroupedDialogues { get; set; }
 
+        //[field: SerializeField] public List<string> Speakers { get; set; }
+        //[field: SerializeField] public List<string> AlternativeName { get; set; }
+
         public void Initialize(string fileName)
         {
             FileName = fileName;
+
+            //Speakers = new List<string>();
+            //AlternativeName = new List<string>();
 
             DialogueGroups = new SerializableDictionary<InitiumDialogueGroupSO, List<InitiumDialogueSO>>();
             UngroupedDialogues = new List<InitiumDialogueSO>();

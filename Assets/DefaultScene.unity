@@ -153,74 +153,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcs:
-  - name: Inn
-    alternativeName: 
-    index: 0
-    conversations:
-    - descriereConversatie: Main
-      lines:
-      - dialogueId: Innq1s1
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Innq1s2
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Innq1s3
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Innq1s4
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      priority: 0
   - name: Blacksmith
-    alternativeName: 
-    index: 0
+    alternativeName: Tom
+    index: 1
     conversations:
     - descriereConversatie: Main
       lines:
-      - dialogueId: Blackq1s2
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Blackq1s3
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
       - dialogueId: Blackq1s1
         particle: 0
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Blackq1s2
+      - dialogueId: Blackq1s2
+        particle: 1
+        questType: 1
+        FetchItems:
+        - quantity: 32
+          id: iron
+          alternativeName: iron
+          redstoneBlock: {x: 1, y: 69, z: 1}
+        - quantity: 32
+          id: coal
+          alternativeName: Coal
+          redstoneBlock: {x: 4, y: 69, z: 1}
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Blackq1s3
+      - dialogueId: Blackq1s3
+        particle: 2
+        questType: 2
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Blacksmithq3s1
       priority: 0
     - descriereConversatie: BlacksmithBeforeInn
       lines:
       - dialogueId: Blacksmithq2s1
-        particle: 0
+        particle: 2
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 1
+        nextDialogues: []
       priority: 1
     - descriereConversatie: BlacksmithAfterInn
       lines:
       - dialogueId: Blacksmithq3s1
-        particle: 0
+        particle: 3
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
       priority: 3
   - name: Butcher
-    alternativeName: 
-    index: 0
+    alternativeName: Jerry
+    index: 2
     conversations:
     - descriereConversatie: Main
       lines:
@@ -229,34 +223,191 @@ MonoBehaviour:
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Butcherq1s2
       - dialogueId: Butcherq1s2
-        particle: 0
-        questType: 0
+        particle: 1
+        questType: 3
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Butcherq1s3
       - dialogueId: Butcherq1s3
-        particle: 0
-        questType: 0
+        particle: 2
+        questType: 2
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Butcherq3s1
       priority: 0
     - descriereConversatie: ButcherBeforeInn
       lines:
       - dialogueId: Butcherq2s1
-        particle: 0
+        particle: 2
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 1
+        nextDialogues: []
       priority: 2
     - descriereConversatie: ButcherAfterInn
       lines:
       - dialogueId: Butcherq3s1
+        particle: 3
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 4
+  - name: Inn
+    alternativeName: Lizz
+    index: 3
+    conversations:
+    - descriereConversatie: Main
+      lines:
+      - dialogueId: Innq1s1
         particle: 0
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
-      priority: 4
+        isStartingDialogue: 1
+        nextDialogues:
+        - Innq1s2
+        - Blackq1s1
+        - Bucherq1s1
+      - dialogueId: Innq1s2
+        particle: 1
+        questType: 1
+        FetchItems:
+        - quantity: 32
+          id: steak
+          alternativeName: Porc
+          redstoneBlock: {x: 10, y: 69, z: 1}
+        - quantity: 32
+          id: iron
+          alternativeName: Horseshoe
+          redstoneBlock: {x: 7, y: 69, z: 1}
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Innq1s3
+      - dialogueId: Innq1s3
+        particle: 2
+        questType: 2
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues:
+        - Innq1s4
+      - dialogueId: Innq1s4
+        particle: 3
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 0
   saveNpc:
+  - name: Blacksmith
+    alternativeName: 
+    index: 0
+    conversations:
+    - descriereConversatie: Main
+      lines:
+      - dialogueId: Blackq1s1
+        particle: 1
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      - dialogueId: Blackq1s2
+        particle: 2
+        questType: 1
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      - dialogueId: Blackq1s3
+        particle: 0
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 0
+    - descriereConversatie: BlacksmithBeforeInn
+      lines:
+      - dialogueId: Blacksmithq2s1
+        particle: 0
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 1
+    - descriereConversatie: BlacksmithAfterInn
+      lines:
+      - dialogueId: Blacksmithq3s1
+        particle: 0
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 3
+  - name: Butcher
+    alternativeName: 
+    index: 0
+    conversations:
+    - descriereConversatie: Main
+      lines:
+      - dialogueId: Bucherq1s1
+        particle: 1
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      - dialogueId: Butcherq1s2
+        particle: 2
+        questType: 2
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      - dialogueId: Butcherq1s3
+        particle: 0
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 0
+    - descriereConversatie: ButcherBeforeInn
+      lines:
+      - dialogueId: Butcherq2s1
+        particle: 0
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 2
+    - descriereConversatie: ButcherAfterInn
+      lines:
+      - dialogueId: Butcherq3s1
+        particle: 0
+        questType: 0
+        FetchItems: []
+        dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
+      priority: 4
   - name: Inn
     alternativeName: 
     index: 0
@@ -268,99 +419,274 @@ MonoBehaviour:
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
       - dialogueId: Innq1s2
-        particle: 0
+        particle: 1
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
       - dialogueId: Innq1s3
-        particle: 0
-        questType: 0
-        FetchItems: []
+        particle: 2
+        questType: 1
+        FetchItems:
+        - quantity: 32
+          id: meat
+          alternativeName: Porc
+          redstoneBlock: {x: 0, y: 0, z: 0}
+        - quantity: 32
+          id: horseshoe
+          alternativeName: Potcoave
+          redstoneBlock: {x: 0, y: 0, z: 0}
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
       - dialogueId: Innq1s4
         particle: 0
         questType: 0
         FetchItems: []
         dialogueText: Dialogue text.
+        isStartingDialogue: 0
+        nextDialogues: []
       priority: 0
-  - name: Blacksmith
-    alternativeName: 
-    index: 0
-    conversations:
-    - descriereConversatie: Main
-      lines:
-      - dialogueId: Blackq1s2
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Blackq1s3
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Blackq1s1
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      priority: 0
-    - descriereConversatie: BlacksmithBeforeInn
-      lines:
-      - dialogueId: Blacksmithq2s1
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      priority: 1
-    - descriereConversatie: BlacksmithAfterInn
-      lines:
-      - dialogueId: Blacksmithq3s1
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      priority: 3
-  - name: Butcher
-    alternativeName: 
-    index: 0
-    conversations:
-    - descriereConversatie: Main
-      lines:
-      - dialogueId: Bucherq1s1
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Butcherq1s2
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      - dialogueId: Butcherq1s3
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      priority: 0
-    - descriereConversatie: ButcherBeforeInn
-      lines:
-      - dialogueId: Butcherq2s1
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      priority: 2
-    - descriereConversatie: ButcherAfterInn
-      lines:
-      - dialogueId: Butcherq3s1
-        particle: 0
-        questType: 0
-        FetchItems: []
-        dialogueText: Dialogue text.
-      priority: 4
-  json: []
+  json:
+  - format_version: 1.17
+    npc_dialogue:
+      scenes:
+      - scene_tag: blacksmith_q1s1
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_blacksmith.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_blacksmith.q1s1
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_blacksmith.q1s1.butt1
+          commands:
+          - /function npc/sqstBlacksmith/q101_DetailQuest
+      - scene_tag: blacksmith_q1s2
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_blacksmith.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_blacksmith.q1s2
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_blacksmith.q1s2.butt1
+          commands:
+          - /function npc/sqstBlacksmith/q102_Fetch
+      - scene_tag: blacksmith_q1s3
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_blacksmith.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_blacksmith.q1s3
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_blacksmith.q1s3.butt1
+          commands:
+          - /function npc/sqstBlacksmith/q103_GiveReward
+      - scene_tag: blacksmith_q2s1
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_blacksmith.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_blacksmith.q2s1
+            with:
+            - \n
+        button:
+          name:
+            rawtext: []
+          commands: []
+      - scene_tag: blacksmith_q3s1
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_blacksmith.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_blacksmith.q3s1
+            with:
+            - \n
+        button:
+          name:
+            rawtext: []
+          commands: []
+  - format_version: 1.17
+    npc_dialogue:
+      scenes:
+      - scene_tag: butcher_q1s1
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_butcher.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_butcher.q1s1
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_butcher.q1s1.butt1
+          commands:
+          - /function npc/sqstButcher/q101_DetailQuest
+      - scene_tag: butcher_q1s2
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_butcher.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_butcher.q1s2
+            with:
+            - \n
+        button:
+          name:
+            rawtext: []
+          commands: []
+      - scene_tag: butcher_q1s3
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_butcher.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_butcher.q1s3
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_butcher.q1s3.butt1
+          commands:
+          - /function npc/sqstButcher/q103_GiveReward
+      - scene_tag: butcher_q2s1
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_butcher.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_butcher.q2s1
+            with:
+            - \n
+        button:
+          name:
+            rawtext: []
+          commands: []
+      - scene_tag: butcher_q3s1
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_butcher.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_butcher.q3s1
+            with:
+            - \n
+        button:
+          name:
+            rawtext: []
+          commands: []
+  - format_version: 1.17
+    npc_dialogue:
+      scenes:
+      - scene_tag: inn_q1s1
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_inn.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_inn.q1s1
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_inn.q1s1.butt1
+          commands:
+          - /function npc/sqstInn/q101_DetailQuest
+      - scene_tag: inn_q1s2
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_inn.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_inn.q1s2
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_inn.q1s2.butt1
+          commands:
+          - /function npc/sqstInn/q102_Fetch
+      - scene_tag: inn_q1s3
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_inn.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_inn.q1s3
+            with:
+            - \n
+        button:
+          name:
+            rawtext:
+            - translate: dlg_npc_inn.q1s3.butt1
+          commands:
+          - /function npc/sqstInn/q103_GiveReward
+      - scene_tag: inn_q1s4
+        npc_name:
+          rawtext:
+          - translate: dlg_npc_inn.name
+            with:
+            - \n
+        text:
+          rawtext:
+          - translate: dlg_npc_inn.q1s4
+            with:
+            - \n
+        button:
+          name:
+            rawtext: []
+          commands: []
   dialogueContainer: {fileID: 11400000, guid: a112bb1ffada9274ca7a0b0b5e1f95ea, type: 2}
 --- !u!4 &643866783
 Transform:

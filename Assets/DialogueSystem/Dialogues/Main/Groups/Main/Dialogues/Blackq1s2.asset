@@ -14,8 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DialogueName>k__BackingField: Blackq1s2
   <Speaker>k__BackingField: Blacksmith
-  <Particle>k__BackingField: 2
+  <AltSpeaker>k__BackingField: Tom
+  <Particle>k__BackingField: 1
   <Type>k__BackingField: 1
+  <FetchItems>k__BackingField:
+  - quantity: 32
+    id: iron
+    alternativeName: iron
+    redstoneBlock: {x: 1, y: 69, z: 1}
+  - quantity: 32
+    id: coal
+    alternativeName: Coal
+    redstoneBlock: {x: 4, y: 69, z: 1}
   <Text>k__BackingField: Dialogue text.
   <Choices>k__BackingField:
   - <Text>k__BackingField: New Choice

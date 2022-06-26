@@ -10,15 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f262818b55b0f4418296bad0176bdab, type: 3}
-  m_Name: Innq1s4
+  m_Name: Innkeeperq1s2
   m_EditorClassIdentifier: 
-  <DialogueName>k__BackingField: Innq1s4
-  <Speaker>k__BackingField: Inn
-  <Particle>k__BackingField: 0
-  <Type>k__BackingField: 0
+  <DialogueName>k__BackingField: Innkeeperq1s2
+  <Speaker>k__BackingField: Innkeeper
+  <AltSpeaker>k__BackingField: Lizz
+  <Particle>k__BackingField: 1
+  <Type>k__BackingField: 1
+  <FetchItems>k__BackingField:
+  - quantity: 32
+    id: steak
+    alternativeName: Porc
+    redstoneBlock: {x: 10, y: 69, z: 1}
+  - quantity: 32
+    id: iron
+    alternativeName: Horseshoe
+    redstoneBlock: {x: 7, y: 69, z: 1}
   <Text>k__BackingField: Dialogue text.
   <Choices>k__BackingField:
   - <Text>k__BackingField: New Choice
-    <NextDialogue>k__BackingField: {fileID: 0}
+    <NextDialogue>k__BackingField: {fileID: 11400000, guid: ef5b29a278330424ebc73aa915f860db, type: 2}
   <DialogueType>k__BackingField: 1
   <IsStartingDialogue>k__BackingField: 0

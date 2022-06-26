@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DialogueName>k__BackingField: Butcherq3s1
   <Speaker>k__BackingField: Butcher
-  <Particle>k__BackingField: 0
+  <AltSpeaker>k__BackingField: Jerry
+  <Particle>k__BackingField: 3
   <Type>k__BackingField: 0
+  <FetchItems>k__BackingField: []
   <Text>k__BackingField: Dialogue text.
   <Choices>k__BackingField:
   - <Text>k__BackingField: New Choice
     <NextDialogue>k__BackingField: {fileID: 0}
   <DialogueType>k__BackingField: 1
-  <IsStartingDialogue>k__BackingField: 1
+  <IsStartingDialogue>k__BackingField: 0

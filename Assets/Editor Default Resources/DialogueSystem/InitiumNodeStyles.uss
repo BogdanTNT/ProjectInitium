@@ -126,6 +126,14 @@ TextField
 	margin-top: var(--Initium-metrics-window-pixels-8);
 }
 
+.horizontal-container
+{
+	flex-direction: row;
+	justify-content: center;
+	align-content: center;
+	flex-wrap: wrap;
+}
+
 /* BUILT IN */
 
 .unity-toggle__text

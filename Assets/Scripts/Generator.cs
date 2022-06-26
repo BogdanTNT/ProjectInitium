@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using static McFunction.McFunctions;
+//using static McFunction.McFunctions;
 using Initium.ScriptableObjects;
 using System.Linq;
+using static McCommands.McCommands;
 
 public class Generator : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class Generator : MonoBehaviour
     public void Generate()
     {
         Debug.ClearDeveloperConsole();
-
+       
         // Init
         BeforeStartingGeneration();
 
@@ -36,6 +37,16 @@ public class Generator : MonoBehaviour
             Generateq00(n);
             GenerateFetch(n);
         }
+        itemCounter = 0;
+        foreach (NPC n in npcs)
+        {
+            GenerateTransitions(n);
+        }
+
+        GenerateInitialiserForScoreboards();
+        GenerateMainExtenstion();
+
+        AssetDatabase.Refresh();
     }
 
     /// <summary>
@@ -45,6 +56,7 @@ public class Generator : MonoBehaviour
     {
         // Sters jsonurile vechi (incearca cel putin)
         FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath + $"/dialogue/");
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"/dialogue/");
 
         // Resetat jsonu 
         json = new List<DialogueJSON>();
@@ -54,6 +66,8 @@ public class Generator : MonoBehaviour
         {
             WriteDialogueJson(n);
         }
+
+        AssetDatabase.Refresh();
     }
 
 
@@ -72,7 +86,8 @@ public class Generator : MonoBehaviour
         //Debug.Log(jsonStr);
 
 
-        cachedLocation = cachedLocation = Application.streamingAssetsPath + $"/dialogue/npc_{n.name}.json";
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"/dialogue/");
+        cachedLocation = Application.streamingAssetsPath + $"/dialogue/npc_{n.name.ToLower()}.json";
         Write(jsonStr);
     }
 
@@ -83,12 +98,10 @@ public class Generator : MonoBehaviour
     void BeforeStartingGeneration()
     {
         // Resetat generare
-        FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath + $"/functions/");
-        FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath + $"/dialogue/");
-        FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath);
+        FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}");
 
         // Creat foldere
-        Directory.CreateDirectory(Application.streamingAssetsPath + $"/dialogue/");
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}");
 
         // Adaugat un index la npc pentru a sti care-i care
         for (int i = 0; i < npcs.Count; i++)
@@ -105,7 +118,7 @@ public class Generator : MonoBehaviour
     /// </summary>
     /// <param name="what"></param>
     /// <param name="npc"></param>
-    public void Write(string what, NPC npc = null)
+    public void Write(string what)
     {
         if (!File.Exists(cachedLocation))
         {
@@ -123,40 +136,83 @@ public class Generator : MonoBehaviour
     /// <param name="n"></param>
     void Generateq00(NPC n)
     {
-        Directory.CreateDirectory(Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/");
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/ ");
 
         #region q000_onSummon
-        cachedLocation = Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/q000_onSummon.mcfunction";
+
+        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/q000_onSummon.mcfunction";
         //Create file
         Write($"# onSummon for {n.name}");
 
         // Set npcMarker
-        Write($"{SB(0)} @s {sc(0)} {(npcs.IndexOf(n) + 1).ToString()}", n);
+        Write(Scoreboard(ScoreboardType.Set, 
+                         thisEntity(), 
+                         GetScore(Identifier.npcMarker), 
+                         npcs.IndexOf(n) + 1));
 
+        Write("");
+ 
         // Set qProg_qn, daca are o singura conversatie atunci q1 devine 1, altfel doar ultimul q devine 1 si restul devin -1
         for (int i = 0; i < n.conversations.Count; i++)
         {
-            string value = i + 1 == n.conversations.Count ? 1.ToString() : (-1).ToString();
-            Write($"{SB(0)} @s qProg_q{i + 1} {value}");
+            int value = -1;
+            if (n.conversations[i].lines.Any(dialog => dialog.isStartingDialogue == true))
+                value = 1;
+            Write(Scoreboard(ScoreboardType.Set, thisEntity(), GetScore(Identifier.questProgress, i + 1), value));
         }
         Write("\n");
 
         Write("# Implement changes");
-        Write($"{f(0, n)}");
+
+        Write(Function($"npc/{GetNPC_NamesForFiles(n.name)}/q002_updateNpcQuests"));
+
 
         #endregion
 
 
         #region q001_checkQuestStages
-        cachedLocation = Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/q001_checkQuestStages.mcfunction";
+
+        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/q001_checkQuestStages.mcfunction";
         //Create file
         Write($"# Check Quest Stages for {n.name}");
 
+
+        // Teoretic, original era @s in loc de @e la primu execute, dar merge
+        // 
+        for(int i = 0; i < n.conversations.Count - 1; i++)
+        {
+            Write(Execute(entity(GetScore(Identifier.questProgress, i + 1), n.conversations[i].lines.Count), 
+                          here(), 
+                          Execute(entity(GetScore(Identifier.npcMarker), n.index), 
+                                  here(), 
+                                  Scoreboard(ScoreboardType.Set, 
+                                             thisEntity(), 
+                                             GetScore(Identifier.questProgress, i + 1), 
+                                             -1))));
+            Write("");
+
+        }
+
+        Write("");
+
+
+        // This portion is used to change the quest that the npc is displaying
+        // The quest number is XYZ, where x is the questline number, the YZ is the individual dialogue line in the questline
+        // This part is also usefull when the npc is out of range and the main function has to wait until the npc is loaded
         for (int i = 0; i < n.conversations.Count; i++)
         {
+            
             for (int j = 0; j < n.conversations[i].lines.Count; j++)
             {
-                Write(exe(1, n, i, j));
+                //Write(Execute(ExecuteType.OnqTag, n, i, j));
+                Write(Execute(entity(GetScore(Identifier.questTag, n.name), int.Parse(GetDialogueValue(i, j))),
+                              here(),
+                              Execute(entity(GetScore(Identifier.npcMarker), n.index),
+                                      here(),
+                                      Scoreboard(ScoreboardType.Set,
+                                                 thisEntity(),
+                                                 GetScore(Identifier.questProgress, i + 1), 
+                                                 j + 1))));
             }
             Write("\n");
         }
@@ -164,27 +220,48 @@ public class Generator : MonoBehaviour
 
         // Dupa ce entitatea este incarcata si ii atribuie noul quest atunci reseteaza master sa nu il mai caute
         Write("# Reset trigger objective");
-        Write($"{SB(0)} {e(0)} {sc(1, n)} -1");
+        //Write($"{ScoreboardCommand(0)} {entities(0)} {scores(scoreType.qTag, n)} -1");
+        Write(Scoreboard(ScoreboardType.Set, masterEntity(), GetScore(Identifier.questTag, n.name), -1));
 
         Write("# Implement changes");
-        Write(f(0, n));
+        Write(Function($"npc/{GetNPC_NamesForFiles(n.name)}/q002_updateNpcQuests"));
 
         #endregion
 
 
         #region q002_updateNpcQuests
-        cachedLocation = Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/q002_updateNpcQuests.mcfunction";
+
+        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/q002_updateNpcQuests.mcfunction";
         //Create file
         Write($"# Dialogue and particle change for {n.name}");
 
-        //for (int i = 0; i < n.conversations.Count; i++)
-        //{
-        //    for (int j = 0; j < n.conversations[i].lines.Count; j++)
-        //    {
-        //        Write(updateNpc, )
-        //        Write(checkQuest, "\n");
-        //    }
-        //}
+        for(int i = n.conversations.Count - 1; i >= 0; i--)
+        {
+            Write($"# Update for quest about {n.conversations[i].descriereConversatie}");
+            for(int j = 0; j < n.conversations[i].lines.Count; j++)
+            {
+                Write($"{Execute(entity(GetScore(Identifier.questProgress, i + 1), j + 1, false, true), here(), "")} dialogue change @s \"{n.name.ToLower()}_q{i + 1}s{j + 1}\"");
+
+                switch (n.conversations[i].lines[j].particle)
+                {
+                    case ParticleForQuest.BeginQuest:
+                        Write($"{Execute(entity(GetScore(Identifier.questProgress, i + 1), j + 1, false, true), here(), "")}  event entity @s scaiquest:ev_quest_info");
+                        break;
+                    case ParticleForQuest.WaitsForQuests:
+                        Write($"{Execute(entity(GetScore(Identifier.questProgress, i + 1), j + 1, false, true), here(), "")} event entity @s scaiquest:ev_quest_in_progress");
+                        break;
+                    case ParticleForQuest.QuestInfo:
+                        Write($"{Execute(entity(GetScore(Identifier.questProgress, i + 1), j + 1, false, true), here(), "")} event entity @s scaiquest:ev_quest_info");
+                        break;
+                    case ParticleForQuest.Idle:
+                        Write($"{Execute(entity(GetScore(Identifier.questProgress, i + 1), j + 1, false, true), here(), "")} event entity @s scaiquest:ev_quest_off");
+                        break;
+                }
+
+                Write("");
+            }
+            Write("");
+        }
 
         #endregion
     }
@@ -196,10 +273,10 @@ public class Generator : MonoBehaviour
     int itemCounter;
     void GenerateFetch(NPC n)
     {
-        Directory.CreateDirectory(Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/mat/");
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/mat/");
 
         // Datorita limitei de caractere in scoreboarduri, cachedName scrie mereu doar primele 6 litere din numele npcurilor
-        string cachedName = n.name.Length > 6 ? n.name.Substring(0, 6) : n.name;
+        string cachedName = GetShortNameForNPC(n.name);
 
 
         // Genereaza fisiere noi pt fiecare dialog in care trebuie sa dea iteme (checkQuestCompletion), dar si pentru fiecare item care trebuie dat (give, add, intrerupt)
@@ -219,9 +296,10 @@ public class Generator : MonoBehaviour
 
                         Item cachedItem = n.conversations[i].lines[j].FetchItems[m];
 
-                        // Scoreboard for item tracked in the quest
+                        // Score for item tracked in the quest
                         string cachedCounter = $"rlcnt{itemCounter}" + (cachedItem.id.Length > 8 ? cachedItem.id.Substring(0, 8) : cachedItem.id);
 
+                        // Verifica Daca A Luat Toate Itemele - VDALTI
                         string cachedVDALTI = $"VDALTI{cachedName}{m}";
 
                         itemScoreboard.Add(cachedCounter);
@@ -230,50 +308,70 @@ public class Generator : MonoBehaviour
                         #endregion
 
 
-                        #region Generare giveItem
+                        #region Generare StartGiving
 
-                        cachedLocation = Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/mat/give{cachedItem.id}.mcfunction";
-                        Write("# Activeaza command blocku");
+                        // This file is called by the button pressed by the player on the dialogue window of the npc.
+                        // The file starts the command block chain to start taking items from the player to complete the quest
 
-                        Write($"setblock {pos(0, cachedItem.redstoneBlock)} minecraft:redstone_block");
+                        //cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/mat/StartGiving{cachedItem.id}.mcfunction";
 
-                        Write("# Trigger check pt a scoate blocul de redstone");
+                        //Write("# Activeaza command blocku");
 
-                        Write($"{SB(1)} {e(1)} activeDelivery 1");
+                        //Write(SetBlock(GetPositionFromVector(cachedItem.redstoneBlock), "minecraft:redstone_block"));
+
+                        //Write("# Trigger check pt a scoate blocul de redstone");
+
+                        ////entities(Entities.NoDelivery)
+                        //Write(Scoreboard(ScoreboardType.Add, entity(GetScore(Identifier.ActiveDelivery), -1, true), GetScore(Identifier.ActiveDelivery), 1));
+
+                        //Write(Scoreboard(ScoreboardType.Set, masterEntity(), cachedVDALTI, 0));
 
                         #endregion
 
 
                         #region Generare additem
 
-                        cachedLocation = Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/mat/add{cachedItem.id}.mcfunction";
+                        // This file is called by the command block each time the player gives an item to the quest
+                        // The function increments the sidebar progress fake-player but also checks if the quest is completed
+
+                        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/mat/add{cachedItem.id}.mcfunction";
+
                         Write("# Incrementeaza counteru");
 
-                        Write($"{SB(1)} {e(0)} {cachedCounter} 1");
+                        Write(Scoreboard(ScoreboardType.Add, masterEntity(), cachedCounter, 1));
 
                         Write("# Actualizeaza sidebar");
 
-                        Write($"{SB(3)} \"Bring {n.alternativeName} {cachedItem.quantity} {cachedItem.alternativeName}\" sidebarQprog = {e(0)} {cachedCounter}");
+                        Write(Scoreboard(ScoreboardType.Operation, "", "", 0) + $"\"Bring {n.alternativeName} {cachedItem.quantity} {cachedItem.alternativeName}\" sidebarQprog = {masterEntity()} {cachedCounter}");
 
-                        Write("# verifica daca conditiile questului au fost indeplinite");
-
-                        Write($"{f(1, n)}");
+                        Write("# Verifica daca conditiile questului au fost indeplinite");
+                        
+                        //Write($"{Function(1, n, i, j)}");
+                        Write(Function($"npc/{GetNPC_NamesForFiles(n.name)}/mat/checkQuestComplete_q{i + 1}s{j + 1}"));
 
                         #endregion
 
 
                         #region Generare intreruptItem
 
-                        cachedLocation = Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/mat/intrerupt{cachedItem.id}.mcfunction";
+                        // This function is called when the command block finished taking the items from the player. 
+                        // This can either happen when the player runs out of items to give or he has finished giving the items
+
+
+                        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/mat/intrerupt{cachedItem.id}.mcfunction";
                         Write("# Intrerupt command block chain");
 
-                        Write($"setblock {pos(0, cachedItem.redstoneBlock)} air");
+                        Write(SetBlock(GetPositionFromVector(cachedItem.redstoneBlock), "air"));
 
-                        Write($"{SB(2)} {e(0)} {cachedVDALTI}");
+                        Write(Scoreboard(ScoreboardType.Reset, masterEntity(), cachedVDALTI, 0));
 
-                        Write($"{SB(4)} {e(2)} activeDelivery 1");
+                        //..entities(Entities.HasDelivery)
+                        Write(Scoreboard(ScoreboardType.Remove, entity(GetScore(Identifier.ActiveDelivery), 0, true), "activeDelivery", 1));
 
-                        Write($"{SB(2)} \"Bring {n.alternativeName} {cachedItem.quantity} {cachedItem.alternativeName}\" sidebarQprog");
+                        Write(Scoreboard(ScoreboardType.Reset,
+                                         $"\"Bring {n.alternativeName} {cachedItem.quantity} {cachedItem.alternativeName}\"",
+                                         "sidebarQprog",
+                                         0));
 
                         #endregion
 
@@ -282,12 +380,29 @@ public class Generator : MonoBehaviour
                     }
                 }
 
+                #region Create Quest Complete
+
+
+                if (itemScoreboard.Count > 0)
+                {
+                    cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/mat/questComplete_q{i + 1}s{j + 1}.mcfunction";
+
+                    Write($"# Things to do after the quest was completed");
+                    Write($"# Set the scoreboard for every character after the quest is completed");
+
+                    string convSB = GetDialogueValue(i, j + 1);
+                    Write(Scoreboard(ScoreboardType.Set, thisEntity(), GetScore(Identifier.questTag, n.name), int.Parse(convSB)));
+
+                }
+
+                #endregion
+
 
                 #region Create Check Quest Completion
 
                 for (int b = 0; b < itemScoreboard.Count; b++)
                 {
-                    cachedLocation = Application.streamingAssetsPath + $"/functions/npc/sqst{n.name}/mat/checkQuestComplete_q{i + 1}s{j + 1}.mcfunction";
+                    cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/mat/checkQuestComplete_q{i + 1}s{j + 1}.mcfunction";
                     Write($"# Check if the quest took all the item for the quest from the inventory");
 
                     List<string> scItem = new List<string>();
@@ -295,18 +410,142 @@ public class Generator : MonoBehaviour
                     List<int> qItem = new List<int>();
                     qItem.Add(itemQuantity[b]);
 
-                    Write($"execute {e(3, scItem, qItem)} ~ ~ ~ function npc/sqst{n.name}/intrerupt{n.conversations[i].lines[j].FetchItems[b].id}");
+                    Write(Execute(entity(scItem, qItem), here(), Function($"npc/{GetNPC_NamesForFiles(n.name)}/mat/intrerupt{n.conversations[i].lines[j].FetchItems[b].id}")));
 
                 }
 
-                if(itemScoreboard.Count > 0)
+
+                if (itemScoreboard.Count > 0)
                 {
-                    string convSB = j + 2 > 9 ? $"{i + 1}{j + 2}" : $"{i + 1}0{j + 2}";
-                    Write($"execute {e(3, itemScoreboard, itemQuantity)} ~ ~ ~ {SB(0)} @s {sc(1, n)} {convSB}");
+                    Write(Execute(entity(itemScoreboard, itemQuantity), here(), Function($"npc/{GetNPC_NamesForFiles(n.name)}/mat/questComplete_q{i + 1}s{j + 1}")));
 
                 }
 
                 #endregion
+            }
+        }
+
+    }
+
+
+    
+    /// <summary>
+    /// Generates qx0y_ceva cu care face tranzitia intre questuri
+    /// </summary>
+    /// <param name="n"></param>
+    void GenerateTransitions(NPC n)
+    {
+        string cachedName = GetShortNameForNPC(n.name);
+
+
+        for(int i = 0; i < n.conversations.Count; i++)
+        {
+            for(int j = 0; j < n.conversations[i].lines.Count; j++)
+            {
+                cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}npc/{GetNPC_NamesForFiles(n.name)}/q{GetDialogueValue(i, j)}_{GetTransition(n.conversations[i].lines[j].questType)}.mcfunction";
+
+                string desc = n.conversations[i].descriereConversatie;
+
+                switch (n.conversations[i].lines[j].questType)
+                {
+                    case QuestType.Info:
+                        Write($"# Gives information about quest {desc} / Accepts quest");
+                        break;
+                    case QuestType.Fetch:
+                        Write($"# Start trying to give items to NPC");
+                        break;
+                    case QuestType.Reward:
+                        Write($"# Rewards player for his/her work");
+                        break;
+                    case QuestType.Custom:
+                        Write($"# Custom quest");
+                        break;
+                }
+
+                if(n.conversations[i].lines[j].questType != QuestType.Fetch)
+                {
+                    foreach(string s in n.conversations[i].lines[j].nextDialogues)
+                    {
+                        foreach(NPC npc in npcs)
+                        {
+                            foreach(Conversation conv in npc.conversations)
+                            {
+                                foreach(Dialogue line in conv.lines)
+                                {
+                                    if (line.dialogueId == s)
+                                    {
+                                        Write("# Obiective progress questuri. Se tin pe fiecare NPC care participa la quest");
+
+                                        string convSB = GetDialogueValue(npc.conversations.IndexOf(conv), 
+                                                                         npc.conversations[npc.conversations.IndexOf(conv)].lines.IndexOf(line));
+
+                                        Write(Scoreboard(ScoreboardType.Set, masterEntity(), GetScore(Identifier.questTag, npc.name), int.Parse(convSB)));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    
+
+                    if(n.conversations[i].lines.Count > j + 1)
+                    {
+                        if(n.conversations[i].lines[j + 1].questType == QuestType.Fetch)
+                        {
+                            Write("\n");
+
+                            Write("### Pregateste scoreboards pentru urmatoru quest care o sa fie fetch ###");
+                            Write("# incrementarea se face prin command blocuri");
+
+
+                            for (int m = 0; m < n.conversations[i].lines[j + 1].FetchItems.Count; m++)
+                            {
+                                Item cachedItem = n.conversations[i].lines[j + 1].FetchItems[m];
+                                
+                                string cachedCounter = $"rlcnt{itemCounter}" + (cachedItem.id.Length > 8 ? cachedItem.id.Substring(0, 8) : cachedItem.id);
+
+                                Write(Scoreboard(ScoreboardType.Add, masterEntity(), cachedCounter, 0));
+
+                                Write(Scoreboard(ScoreboardType.Operation, "", "", 0) + $"\"Bring {n.alternativeName} {cachedItem.quantity} {cachedItem.alternativeName}\" sidebarQprog = {masterEntity()} {cachedCounter}");
+
+                                itemCounter++;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (int m = 0; m < n.conversations[i].lines[j].FetchItems.Count; m++)
+                    {
+
+                        //Write(Function($"npc/{GetNPC_NamesForFiles(n.name)}/mat/StartGiving{item.id}"));
+
+                        Item cachedItem = n.conversations[i].lines[j].FetchItems[m];
+
+                        // Verifica Daca A Luat Toate Itemele - VDALTI
+                        string cachedVDALTI = $"VDALTI{cachedName}{m}";
+
+                        Write("# Activeaza command blocku");
+
+                        Write(SetBlock(GetPositionFromVector(cachedItem.redstoneBlock), "minecraft:redstone_block"));
+
+                        Write("# Trigger check pt a scoate blocul de redstone");
+
+                        //entities(Entities.NoDelivery)
+                        Write(Scoreboard(ScoreboardType.Add, entity(GetScore(Identifier.ActiveDelivery), -1, true), GetScore(Identifier.ActiveDelivery), 1));
+
+                        Write("# initializare timer de scos bloc de redstone pt coal.");
+                        Write("# scadem din el in activeDelivery.mcfunction");
+                        Write("# Il prelungim/resetam in add" + cachedItem + ".mcfunction");
+
+                        Write(Scoreboard(ScoreboardType.Set, masterEntity(), cachedVDALTI, 0));
+
+                        Write("");
+                    }
+                }
+
+                Write("");
+                Write(Function($"npc/{GetNPC_NamesForFiles(n.name)}/q002_updateNpcQuests"));
             }
         }
     }
@@ -330,10 +569,15 @@ public class Generator : MonoBehaviour
     {
         npcs.Clear();
 
-        for(int i = 0; i < dialogueContainer.DialogueGroups.Count; i++)
+
+        for (int i = 0; i < dialogueContainer.DialogueGroups.Count; i++)
         {
             List<InitiumDialogueSO> conversatie = new List<InitiumDialogueSO>();
             conversatie = dialogueContainer.DialogueGroups.Values.ToList()[i];
+            conversatie.Sort(delegate(InitiumDialogueSO x, InitiumDialogueSO y)
+            {
+                return x.name.CompareTo(y.name);
+            });
 
             for(int j = 0; j < conversatie.Count; j++)
             {
@@ -343,20 +587,172 @@ public class Generator : MonoBehaviour
                     npcs.Add(new NPC(conversatie[j].Speaker));
                 }
 
+                var n = npcs.First(npc => npc.name == conversatie[j].Speaker);
+                n.alternativeName = conversatie[j].AltSpeaker;
+
                 // daca speakeru nu are o conversatie cu indexul (i) in conversatiea lui de conversatii, o creaza
-                if(!npcs.First(npc => npc.name == conversatie[j].Speaker).conversations.Any(conv => conv.priority == i))
+                if (!n.conversations.Any(conv => conv.priority == i))
                 {
-                    npcs.First(npc => npc.name == conversatie[j].Speaker).conversations.Add(new Conversation(i, dialogueContainer.DialogueGroups.Keys.ToList()[i].GroupName));
+                    n.conversations.Add(new Conversation(i, dialogueContainer.DialogueGroups.Keys.ToList()[i].GroupName));
                 }
 
+                var con = n.conversations.First(conv => conv.priority == i);
                 // Trebuie schimabta incat in functie de quest sa adauge diverse lucruri
                 // Adica daca e un fetch quest sa ii adauge si iteme, dar doar atunci sa le adauge, nu si daca e info quest
 
+                Dialogue dialogue = new Dialogue(conversatie[j]);
                 //Aici cauta primul npc cu numele vorbitului care spune dialogul cu indexul j din conversatie, dupa aceea cauta conversatia npcului care are legatura cu "conversatie", dupa aceea adauga o noua linie de dialog 
-                npcs.First(npc => npc.name == conversatie[j].Speaker).conversations.First(conv => conv.priority == i).lines.Add(new Dialogue(conversatie[j].DialogueName, conversatie[j].Text, conversatie[j].Particle, conversatie[j].Type));
+                con.lines.Add(dialogue);
             }
         }
     }
 
+
+    private void GenerateInitialiserForScoreboards()
+    {
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}scoreboardsAddon/");
+        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}scoreboardsAddon/quest.mcfunction";
+
+        Write("# Every scoreboard used by the quest will be initialised here");
+
+        Write("scoreboard objectives remove activeDelivery");
+        Write("scoreboard objectives add activeDelivery dummy");
+
+        Write("scoreboard objectives remove sidebarQprog");
+        Write("scoreboard objectives add sidebarQprog dummy");
+
+        //Write($"{ScoreboardCommand(0)} @s activeDelivery -1");
+        Write(Scoreboard(ScoreboardType.Set, thisEntity(), GetScore(Identifier.ActiveDelivery), -1));
+
+        Write("\n");
+
+        int itemCounter = 0;
+        foreach (NPC n in npcs)
+        {
+            Write($"# ---- Scoreboards for {n.name}/{n.alternativeName} ----");
+
+            //scores(scoreType.qTag, n)
+            Write($"scoreboard objectives remove {GetScore(Identifier.questTag, n.index)}");
+            Write($"scoreboard objectives add {GetScore(Identifier.questTag, n.index)} dummy");
+            Write("");
+
+
+            string cachedName = n.name.Length > 6 ? n.name.Substring(0, 6) : n.name;
+
+            foreach (Conversation c in n.conversations)
+            {
+                Write($"scoreboard objectives remove questProgress_q{n.conversations.IndexOf(c) + 1}");
+                Write($"scoreboard objectives add questProgress_q{n.conversations.IndexOf(c) + 1} dummy");
+                Write("");
+
+                foreach (Dialogue d in c.lines)
+                {
+                    if (d.questType == QuestType.Fetch)
+                    {
+                        foreach (Item i in d.FetchItems)
+                        {
+                            string cachedCounter = $"rlcnt{itemCounter}" + (i.id.Length > 8 ? i.id.Substring(0, 8) : i.id);
+
+                            string cachedVDALTI = $"VDALTI{cachedName}{d.FetchItems.IndexOf(i)}";
+
+                            Write($"scoreboard objectives remove {cachedCounter}");
+                            Write($"scoreboard objectives add {cachedCounter} dummy");
+
+                            Write($"scoreboard objectives remove {cachedVDALTI}");
+                            Write($"scoreboard objectives add {cachedVDALTI} dummy");
+
+
+                            //Write($"{ScoreboardCommand(0)} @s {cachedCounter} 0");
+                            Write(Scoreboard(ScoreboardType.Set, thisEntity(), cachedCounter, 0));
+
+                            itemCounter++;
+                            Write("");
+
+                        }
+                    }
+                }
+
+            }
+
+            Write("\n");
+
+        }
+
+    }
+
+    private void GenerateMainExtenstion()
+    {
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}scoreboardsAddon/");
+        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}scoreboardsAddon/mainExtenstion.mcfunction";
+
+        Write("# Main function extension, usually for items");
+
+        //Write("execute @e[scores={activeDelivery=0..}] ~~~ function triggers/activeDelivery\n");
+
+        Write(Execute(entity(GetScore(Identifier.ActiveDelivery), 0, true), here(), Function("triggers/activeDelivery")));
+        Write("");
+
+        for(int i = 0; i < npcs.Count; i++)
+        {
+            //Write("execute @e[scores = {globalTimer1Sec = " + );
+
+        }
+
+        foreach (NPC n in npcs)
+        {
+            //Write("execute @e[scores = {globalTimer1Sec = " + n.index + $", {scores(scoreType.qTag, n)} = 0.." + "}] ~ ~ ~ " + $"{Execute(ExecuteType.OnNpcMarker, n)} {Function(2, n)}");
+            Write(Execute("@e[scores = {" + $"{GetScore(Identifier.globalTimer1Sec)} = {n.index}, " +
+                          $"{GetScore(Identifier.questTag, n.name)} = 0.." + "}] ", 
+                          here(), 
+                          Execute(entity(GetScore(Identifier.npcMarker), n.index), 
+                                  here(), 
+                                  Function($"npc/{GetNPC_NamesForFiles(n.name)}/q001_checkQuestStages"))));
+        }
+
+        Write("\n");
+
+
+        Directory.CreateDirectory(Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}triggers/");
+        cachedLocation = Application.streamingAssetsPath + $"{GetParentDirectoryForQuests()}triggers/activeDelivery.mcfunction";
+
+
+        foreach (NPC n in npcs)
+        {
+            string cachedName = GetShortNameForNPC(n.name);
+
+            foreach (Conversation c in n.conversations)
+            {
+                foreach (Dialogue d in c.lines)
+                {
+                    if(d.questType == QuestType.Fetch)
+                    {
+                        foreach (Item i in d.FetchItems)
+                        {
+                            string cachedVDALTI = $"VDALTI{cachedName}{d.FetchItems.IndexOf(i)}";
+
+                            //Write($"{ScoreboardCommand(ScoreboardCommands.Add)} @e[scores = " + "{" + cachedVDALTI + " = 0..}] " + cachedVDALTI + " 1");
+                            Write(Scoreboard(ScoreboardType.Add, $"@e[scores = " + "{" + cachedVDALTI + " = 0..}] ", cachedVDALTI, 1));
+
+                            //Write($"execute @e[scores = " + 
+                            //    "{" + 
+                            //    cachedVDALTI + 
+                            //    " = " + 
+                            //    (i.quantity + 5).ToString() + 
+                            //    "..}] ~ ~ ~ function npc/sqst" + 
+                            //    $"{n.name}/mat/intrerupt{i.id}");
+
+                            Write(Execute("@e[scores = " + "{" + cachedVDALTI + " = " + (i.quantity + 5).ToString() + "..}]",
+                                          here(),
+                                          Function(GetParentDirectoryForQuests(true) + GetNPC_NamesForFiles(n.name) + "/mat/intrerupt" + i.id)));
+                        }
+                    }
+                    
+                }
+
+            }
+
+            Write("");
+        }
+    }
 }
 

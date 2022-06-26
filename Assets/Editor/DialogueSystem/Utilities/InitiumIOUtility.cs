@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static Speakers.Characters;
 
 namespace Initium.Utilities
 {
@@ -162,8 +163,10 @@ namespace Initium.Utilities
                 ID = node.ID,
                 Name = node.DialogueName,
                 Speaker = node.speaker,
+                AltSpeaker = node.speaker,
                 Type = node.type,
                 Particle = node.particle,
+                FetchItems = new List<Item>(node.fetchItems),
                 Choices = choices,
                 Text = node.Text,
                 GroupID = node.Group?.ID,
@@ -191,6 +194,9 @@ namespace Initium.Utilities
                 dialogueContainer.UngroupedDialogues.Add(dialogue);
             }
 
+            //if (node.DialogueName == "Innq1s3")
+            //    Debug.LogError("Da");
+
             dialogue.Initialize(
                 node.DialogueName,
                 node.Text,
@@ -198,8 +204,10 @@ namespace Initium.Utilities
                 node.DialogueType,
                 node.IsStartingNode(),
                 node.speaker,
+                GetAltName(IndexOfSpeaker(node.speaker)),
                 node.particle,
-                node.type
+                node.type,
+                node.fetchItems
             );
 
             createdDialogues.Add(node.ID, dialogue);
@@ -303,6 +311,10 @@ namespace Initium.Utilities
 
             InitiumEditorWindow.UpdateFileName(graphData.FileName);
 
+            SetSpeaker(graphData.Speakers);
+            Debug.Log(GetSpeaker(2));
+            SetAlt(graphData.AlternativeName);
+
             LoadGroups(graphData.Groups);
             LoadNodes(graphData.Nodes);
             LoadNodesConnections();
@@ -332,7 +344,12 @@ namespace Initium.Utilities
                 node.Choices = choices;
                 node.Text = nodeData.Text;
                 node.speaker = nodeData.Speaker;
+                node.altSpeaker = nodeData.AltSpeaker;
                 node.type = nodeData.Type;
+                if (nodeData.FetchItems.Count != 0)
+                    node.fetchItems = new List<Item>(nodeData.FetchItems);
+                else
+                    node.fetchItems = new List<Item>();
                 node.particle = nodeData.Particle;
 
                 node.Draw();
@@ -415,6 +432,7 @@ namespace Initium.Utilities
                     return;
                 }
             });
+
         }
 
         public static void CreateFolder(string parentFolderPath, string newFolderName)

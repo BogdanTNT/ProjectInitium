@@ -1,6 +1,9 @@
+using Initium.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static McFunction.McFunctions;
+using static McCommands.McCommands;
 
 
 [System.Serializable]
@@ -49,6 +52,13 @@ public class Conversation
 
         lines = new List<Dialogue>();
     }
+
+    public Conversation(Conversation c)
+    {
+        descriereConversatie = c.descriereConversatie;
+        lines = new List<Dialogue>(c.lines);
+        priority = c.priority;
+    }
 }
 
 // O linie de dialog reprezinta un quest efectiv, dar o linie de dialog poate fi si doar informativa 
@@ -67,15 +77,50 @@ public class Dialogue
 
     public string dialogueText;
 
-    public Dialogue(string id, string text, ParticleForQuest overhead = ParticleForQuest.Info, QuestType type = QuestType.Info, List<Item> items = null)
+    //[HideInInspector]
+    public bool isStartingDialogue;
+
+    public List<string> nextDialogues;
+
+    public Dialogue(string id, string text, ParticleForQuest overhead = ParticleForQuest.BeginQuest, QuestType type = QuestType.Info, List<Item> items = null, bool starter = false, List<string> choices = null)
     {
         dialogueId = id;
         dialogueText = text;
 
         particle = overhead;
         questType = type;
+
+        FetchItems = new List<Item>();
         if(items != null)
             FetchItems = items;
+
+        isStartingDialogue = starter;
+
+        if(nextDialogues != null)
+            nextDialogues = new List<string>(choices);
+    }
+
+    public Dialogue(InitiumDialogueSO dialogue)
+    {
+        dialogueId = dialogue.DialogueName;
+        particle = dialogue.Particle;
+        questType = dialogue.Type;
+        FetchItems = new List<Item>(dialogue.FetchItems);
+        dialogueText = dialogue.Text;
+        isStartingDialogue = dialogue.IsStartingDialogue;
+        nextDialogues = new List<string>();
+
+        if (dialogue.Choices.Count != 0)
+        {
+            foreach(Initium.Data.InitiumDialogueChoiceData data in dialogue.Choices)
+            {
+                if(data != null)
+                    if(data.NextDialogue != null)
+                        nextDialogues.Add(data.NextDialogue.DialogueName);
+            }
+        }
+            //nextDialogues = new List<string>(dialogue.Choices.ConvertAll(new System.Converter<Initium.Data.InitiumDialogueChoiceData, string>(n => n.NextDialogue.DialogueName)));
+        
     }
 }
 
@@ -86,21 +131,25 @@ public class Dialogue
 [System.Serializable]
 public enum ParticleForQuest
 {
-    Info, GivesQuest, WaitsQuest, Idle 
+    BeginQuest, WaitsForQuests, QuestInfo, Idle 
 }
 
 [System.Serializable]
 public enum QuestType
 {
-    Info, Fetch, Custom
+    Info, Fetch, Reward, Custom
 }
+
+
 
 /// <summary>
 /// Reprezinta itemul care o sa fie dat de catre player in fetch quest
 /// </summary>
 [System.Serializable]
-public struct Item
+public class Item
 {
+    
+
     [Tooltip("Cate iteme tre sa aduca playeru?")]
     public int quantity;
 
@@ -112,6 +161,22 @@ public struct Item
 
     [Tooltip("Unde trebuie plasat redstone blocku ca sa poate sistemul sa ia itemul din inventarul playerului")]
     public Vector3 redstoneBlock;
+
+    public Item(Item item)
+    {
+        quantity = item.quantity;
+        id = item.id;
+        alternativeName = item.alternativeName;
+        redstoneBlock = item.redstoneBlock;
+    }
+
+    public Item()
+    {
+        quantity = 0;
+        id = "Item Id";
+        alternativeName = "Human Item Name";
+        redstoneBlock = Vector3.zero;
+    }
 }
 
 
@@ -142,7 +207,7 @@ public class DialogueJSON
 
                 public RawText(string whatToTranslate)
                 {
-                    translate = whatToTranslate;
+                    translate = whatToTranslate.ToLower();
                     with = new List<string>();
                     with.Add(@"\n");
                 }
@@ -159,7 +224,7 @@ public class DialogueJSON
                 public Text(string s)
                 {
                     rawtext = new List<RawText>();
-                    rawtext.Add(new RawText(s));
+                    rawtext.Add(new RawText(s.ToLower()));
                 }
             }
 
@@ -187,7 +252,7 @@ public class DialogueJSON
 
                 public ButtonRawText(string whatToTranslate)
                 {
-                    translate = whatToTranslate;
+                    translate = whatToTranslate.ToLower();
                 }
             }
             /// <summary>
@@ -212,22 +277,44 @@ public class DialogueJSON
 
             public Text text;
 
-            public Button button;
+            public List<Button> buttons;
 
             public Scene(Dialogue d, NPC n, int conv, int line)
             {
-                scene_tag = $"{n.name}_q{conv}s{line}";
-                npc_name = new Text($"dlg_npc_{n.name}.name");
+
+                scene_tag = $"{n.name}_q{conv}s{line}".ToLower();
+                npc_name = new Text($"dlg_npc_{n.name}.name".ToLower());
                 text = new Text($"dlg_npc_{n.name}.q{conv}s{line}");
+
+                buttons = new List<Button>();
 
                 if(n.conversations[conv - 1].lines[line - 1].questType == QuestType.Fetch)
                 {
                     string functionCommand = line > 9 ? $"{conv}{line}" : $"{conv}0{line}";
-                    button = new Button($"dlg_npc_{n.name}.q{conv}s{line}.butt1", $"/function npc/sqst_npc_{n.name}/q{functionCommand}");
+
+                    buttons.Add(new Button($"dlg_npc_{n.name}.q{conv}s{line}.butt1", 
+                                           $"/function {GetParentDirectoryForQuests(true)}npc/{GetNPC_NamesForFiles(n.name)}/q{functionCommand}_{GetTransition(n.conversations[conv - 1].lines[line - 1].questType)}"));
+                }
+                else if (n.conversations[conv - 1].lines[line - 1].questType == QuestType.Info)
+                {
+                    if(n.conversations[conv - 1].lines[line - 1].particle == ParticleForQuest.BeginQuest)
+                    {
+                        string functionCommand = line > 9 ? $"{conv}{line}" : $"{conv}0{line}";
+
+                        buttons.Add(new Button($"dlg_npc_{n.name}.q{conv}s{line}.butt1", 
+                                               $"/function {GetParentDirectoryForQuests(true)}npc/{GetNPC_NamesForFiles(n.name)}/q{functionCommand}_{GetTransition(n.conversations[conv - 1].lines[line - 1].questType)}"));
+                    }
+                }
+                else if(n.conversations[conv - 1].lines[line - 1].questType == QuestType.Reward)
+                {
+                    string functionCommand = line > 9 ? $"{conv}{line}" : $"{conv}0{line}";
+
+                    buttons.Add(new Button($"dlg_npc_{n.name}.q{conv}s{line}.butt1", 
+                                           $"/function {GetParentDirectoryForQuests(true)}npc/{GetNPC_NamesForFiles(n.name)}/q{functionCommand}_{GetTransition(n.conversations[conv - 1].lines[line - 1].questType)}"));
                 }
                 else
                 {
-                    button = null;
+                    buttons = null;
                 }
             }
         }

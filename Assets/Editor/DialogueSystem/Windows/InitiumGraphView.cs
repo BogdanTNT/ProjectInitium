@@ -3,6 +3,57 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Linq;
+
+namespace Speakers
+{
+    public class Characters
+    {
+        public static string[] Speakers;
+
+        public static string[] AlternativeName;
+
+        public static string GetSpeaker(int value)
+        {
+            return Speakers[value];
+        }
+
+        public static string GetAltName(int value)
+        {
+            return AlternativeName[value];
+        }
+
+        public static int IndexOfSpeaker(string Speaker)
+        {
+            for(int i = 0; i < Speakers.Length; i++)
+            {
+                if (Speakers[i] == Speaker)
+                    return i;
+            }
+            return 0;
+        }
+
+        public static void SetSpeaker(List<string> ar)
+        {
+            Speakers = ar.ToArray();
+        }
+
+        public static void SetAlt(List<string> ar)
+        {
+            AlternativeName = ar.ToArray();
+        }
+
+        public static List<string> AllSpeakers()
+        {
+            return Speakers.ToList();
+        }
+
+        public static List<string> AllAltName()
+        {
+            return AlternativeName.ToList();
+        }
+    }
+}
 
 namespace Initium.Windows
 {
@@ -11,9 +62,14 @@ namespace Initium.Windows
     using Elements;
     using Enumerations;
     using Utilities;
+    using static Speakers.Characters;
+
+
+
 
     public class InitiumGraphView : GraphView
     {
+
         private InitiumEditorWindow editorWindow;
         private InitiumSearchWindow searchWindow;
 
