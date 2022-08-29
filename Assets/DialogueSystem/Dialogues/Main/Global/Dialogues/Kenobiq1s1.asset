@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f262818b55b0f4418296bad0176bdab, type: 3}
-  m_Name: Blackq1s1
+  m_Name: Kenobiq1s1
   m_EditorClassIdentifier: 
-  <DialogueName>k__BackingField: Blackq1s1
-  <Speaker>k__BackingField: Blacksmith
-  <AltSpeaker>k__BackingField: Tom
+  <DialogueName>k__BackingField: Kenobiq1s1
+  <Speaker>k__BackingField: Innkeeper
+  <AltSpeaker>k__BackingField: Lizz
   <Particle>k__BackingField: 0
   <Type>k__BackingField: 0
   <FetchItems>k__BackingField: []
-  <Text>k__BackingField: Hello there
+  <Text>k__BackingField: Hello There
   <Choices>k__BackingField:
   - <Text>k__BackingField: New Choice
-    <NextDialogue>k__BackingField: {fileID: 11400000, guid: 1d85536bdc2f7814a96fe3a252bf7b1b, type: 2}
+    <NextDialogue>k__BackingField: {fileID: 11400000, guid: e0377ff99540e8e44a74a8be171d92c2, type: 2}
   <DialogueType>k__BackingField: 1
-  <IsStartingDialogue>k__BackingField: 0
+  <IsStartingDialogue>k__BackingField: 1

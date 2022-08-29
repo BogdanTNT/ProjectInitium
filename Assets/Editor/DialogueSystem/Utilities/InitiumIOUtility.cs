@@ -194,9 +194,6 @@ namespace Initium.Utilities
                 dialogueContainer.UngroupedDialogues.Add(dialogue);
             }
 
-            //if (node.DialogueName == "Innq1s3")
-            //    Debug.LogError("Da");
-
             dialogue.Initialize(
                 node.DialogueName,
                 node.Text,
@@ -312,7 +309,7 @@ namespace Initium.Utilities
             InitiumEditorWindow.UpdateFileName(graphData.FileName);
 
             SetSpeaker(graphData.Speakers);
-            Debug.Log(GetSpeaker(2));
+            //Debug.Log(GetSpeaker(2));
             SetAlt(graphData.AlternativeName);
 
             LoadGroups(graphData.Groups);

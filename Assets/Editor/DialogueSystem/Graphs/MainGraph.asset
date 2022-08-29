@@ -153,7 +153,7 @@ MonoBehaviour:
     <Particle>k__BackingField: 0
     <Type>k__BackingField: 0
     <FetchItems>k__BackingField: []
-    <Text>k__BackingField: Dialogue text.
+    <Text>k__BackingField: Hello there
     <Choices>k__BackingField:
     - <Text>k__BackingField: New Choice
       <NodeID>k__BackingField: 6551fc67-5f7b-4667-939c-b0cc63d52005
@@ -250,13 +250,43 @@ MonoBehaviour:
     <GroupID>k__BackingField: 82b0464f-9843-42e9-9dba-4862d362bff0
     <DialogueType>k__BackingField: 1
     <Position>k__BackingField: {x: 1715, y: 434}
+  - <ID>k__BackingField: 457782c7-38d0-4669-9892-1a2be6ef0a71
+    <Name>k__BackingField: Kenobiq1s1
+    <Speaker>k__BackingField: Innkeeper
+    <AltSpeaker>k__BackingField: Innkeeper
+    <Particle>k__BackingField: 0
+    <Type>k__BackingField: 0
+    <FetchItems>k__BackingField: []
+    <Text>k__BackingField: Hello There
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 4545a00d-0123-4489-95eb-0837dd0c1a23
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 524, y: 1575}
+  - <ID>k__BackingField: 4545a00d-0123-4489-95eb-0837dd0c1a23
+    <Name>k__BackingField: Grievusq1s1
+    <Speaker>k__BackingField: Innkeeper
+    <AltSpeaker>k__BackingField: Innkeeper
+    <Particle>k__BackingField: 2
+    <Type>k__BackingField: 0
+    <FetchItems>k__BackingField: []
+    <Text>k__BackingField: General Kenobi!
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 1
+    <Position>k__BackingField: {x: 916, y: 1575}
   <OldGroupNames>k__BackingField:
   - Main
   - BlacksmithBeforeInn
   - ButcherBeforeInn
   - BlacksmithAfterInn
   - ButcherAfterInn
-  <OldUngroupedNodeNames>k__BackingField: []
+  <OldUngroupedNodeNames>k__BackingField:
+  - Kenobiq1s1
+  - Grievusq1s1
   <OldGroupedNodeNames>k__BackingField:
     list:
     - Key: Main
